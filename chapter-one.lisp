@@ -9,7 +9,7 @@
 )
 
 (defun freq (l)
-  (reduce
+  (sort (reduce
     (lambda (m e)
       (let ((a (assoc e m)))
         (if a
@@ -20,5 +20,5 @@
     )
     l
     :initial-value '()
-  )
+  ) (lambda (a b) (> (cdr a) (cdr b))))
 )
