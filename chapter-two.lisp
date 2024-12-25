@@ -56,3 +56,15 @@
     )
   )
 )
+
+(defstruct bst l r val)
+
+(defun unwrap-bst (bs)
+  (if bs
+    (append
+      (unwrap-bst (bst-l bs))
+      (list (bst-val bs))
+      (unwrap-bst (bst-r bs))
+    )
+  )
+)
