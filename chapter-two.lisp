@@ -31,3 +31,28 @@
 )
 
 (defun my-reverse (l) (reduce (lambda (r e) (cons e r)) l :initial-value nil))
+
+(defstruct my-tree a b c val)
+
+(defun my-copy-my-tree (tr)
+  (if tr
+    (make-my-tree
+      :a (my-copy-my-tree (my-tree-a tr))
+      :b (my-copy-my-tree (my-tree-b tr))
+      :c (my-copy-my-tree (my-tree-c tr))
+      :val (my-tree-val tr)
+    )
+  )
+)
+
+(defun search-my-tree (tr val)
+  (if tr
+    (if (eql (my-tree-val tr) val) tr
+      (or
+        (search-my-tree (my-tree-a tr) val)
+        (search-my-tree (my-tree-b tr) val)
+        (search-my-tree (my-tree-c tr) val)
+      )
+    )
+  )
+)
