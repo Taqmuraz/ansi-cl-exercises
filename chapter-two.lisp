@@ -25,3 +25,9 @@
     r
   )
 )
+
+(defun my-copy-list (l)
+  (reduce (lambda (r e) (append r (list e))) l :initial-value nil)
+)
+
+(defun my-reverse (l) (reduce (lambda (r e) (cons e r)) l :initial-value nil))
