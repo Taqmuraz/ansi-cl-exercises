@@ -20,3 +20,14 @@
     )
   )
 )
+
+(defun intersperse (e l)
+  (rest (apply #'append (loop for i in l collect (list e i))))
+)
+
+(defun intersperse-rec (e l)
+  (if (< 1 (length l))
+    (append (list (first l) e) (intersperse-rec e (rest l)))
+    l
+  )
+)
