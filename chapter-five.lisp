@@ -26,8 +26,8 @@
 )
 
 (defun intersperse-rec (e l)
-  (if (< 1 (length l))
-    (append (list (first l) e) (intersperse-rec e (rest l)))
+  (if (< (length l) 2)
     l
+    (append (list (first l) e) (intersperse-rec e (rest l)))
   )
 )
