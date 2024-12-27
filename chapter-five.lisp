@@ -35,3 +35,11 @@
 (defun diff1 (l)
   (apply #'= 1 (mapcar #'- l (rest l)))
 )
+
+(defun diff1-pairs(l)
+  (case (length l)
+    (0 t)
+    (1 nil)
+    (t (and (= 1 (- (first l) (second l))) (diff1-pairs (nthcdr 2 l))))
+  )
+)
