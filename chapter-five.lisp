@@ -31,3 +31,12 @@
     (append (list (first l) e) (intersperse-rec e (rest l)))
   )
 )
+
+(defun diff1 (l)
+  (apply #'= 1
+    (loop for c in (maplist #'identity l)
+      when (< 1 (length c))
+      collect (- (first c) (second c))
+    )
+  )
+)
