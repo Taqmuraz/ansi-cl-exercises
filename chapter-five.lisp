@@ -33,10 +33,5 @@
 )
 
 (defun diff1 (l)
-  (apply #'= 1
-    (loop for c in (maplist #'identity l)
-      when (< 1 (length c))
-      collect (- (first c) (second c))
-    )
-  )
+  (apply #'= 1 (mapcar #'- l (rest l)))
 )
