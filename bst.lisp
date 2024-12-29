@@ -1,15 +1,21 @@
-(defstruct node val l r)
-
-(defun node-height (n)
-  (if n
-    (+ 1 (max (node-height (node-l n)) (node-height (node-r n))))
-    0
+(defstruct
+  (node
+    (:constructor make-node
+      (&key val l r &aux
+        (height (+ 1 (max (if l (node-height l) 0) (if r (node-height r) 0))))
+      )
+    )
   )
+  val l r height
+)
+
+(defun tree-height (tree)
+  (if tree (node-height tree) 0)
 )
 
 (defun node-balance (n)
   (if n
-    (- (node-height (node-r n)) (node-height (node-l n)))
+    (- (tree-height (node-r n)) (tree-height (node-l n)))
     0
   )
 )
