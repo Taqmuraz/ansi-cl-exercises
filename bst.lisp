@@ -1,3 +1,17 @@
+(defstruct pair key val)
+
+(defmethod print-object ((p pair) stream)
+  (format stream "(~A ~A)" (pair-key p) (pair-val p))
+)
+
+(defun key< (<)
+  (lambda (a b) (funcall < (pair-key a) (pair-key b)))
+)
+
+(defun key= (=)
+  (lambda (a b) (funcall = (pair-key a) (pair-key b)))
+)
+
 (defstruct
   (node
     (:constructor make-node
@@ -93,6 +107,10 @@
   )
 )
 
+(defun insert-value (tree key val < =)
+  (insert-node tree (make-node :val (make-pair :key key :val val)) < =)
+)
+
 (defun tree-min (tree)
   (cond
     ((node-l tree) (tree-min (node-l tree)))
@@ -107,12 +125,12 @@
   )
 )
 
-(defun tree-content (tree)
+(defun tree-content (tree &key key)
   (if tree
     (append
-      (tree-content (node-l tree))
-      (list (node-val tree))
-      (tree-content (node-r tree))
+      (tree-content (node-l tree) :key key)
+      (list (funcall (if key key #'pair-val) (node-val tree)))
+      (tree-content (node-r tree) :key key)
     )
   )
 )
