@@ -43,12 +43,12 @@
   )
 )
 
-(defun hash-search-test (n)
+(defun hash-search-test (e n)
   (let (
-      (r (funcall (hash-insert-test n)))
+      (r (funcall (hash-insert-test e)))
       (s (get-ms))
     )
-    (dotimes (i n) (setf (gethash i r) 0))
+    (dotimes (i n) (setf (gethash (mod i e) r) 0))
     (values
       (lambda () r)
       (round (- (get-ms) s))
@@ -56,15 +56,15 @@
   )
 )
 
-(defun bst-search-test (n)
+(defun bst-search-test (e n)
   (let (
-      (r (funcall (bst-pair-insert-test n)))
+      (r (funcall (bst-pair-insert-test e)))
       (s (get-ms))
     )
     (dotimes (i n) (setf
       (pair-val
         (node-val
-          (search-tree r i #'< #'= :key #'pair-key))) 0))
+          (search-tree r (mod i e) #'< #'= :key #'pair-key))) 0))
     (values
       (lambda () r)
       (round (- (get-ms) s))
@@ -85,12 +85,12 @@
   )
 )
 
-(defun assoc-search-test (n)
+(defun assoc-search-test (e n)
   (let (
-      (r (funcall (assoc-insert-test n)))
+      (r (funcall (assoc-insert-test e)))
       (s (get-ms))
     )
-    (dotimes (i n) (setf (cdr (assoc i r)) 0))
+    (dotimes (i n) (setf (cdr (assoc (mod i e) r)) 0))
     (values
       (lambda () r)
       (round (- (get-ms) s))
