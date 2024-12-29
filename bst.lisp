@@ -134,3 +134,18 @@
     )
   )
 )
+
+(defun search-tree (tree item < = &key key)
+  (if tree
+    (let (
+        (v (node-val tree))
+        (key (if key key #'pair-key))
+      )
+      (cond
+        ((funcall < item (funcall key v)) (search-tree (node-l tree) item < = :key key))
+        ((funcall = item (funcall key v)) tree)
+        (t (search-tree (node-r tree) item < = :key key))
+      )
+    )
+  )
+)
