@@ -1,19 +1,57 @@
 (defstruct node val l r)
 
+(defun node-height (n)
+  (if n
+    (+ 1 (max (node-height (node-l n)) (node-height (node-r n))))
+    0
+  )
+)
+
 (defun node-balance (n)
   (if n
-    (let (
-        (l (node-l n))
-        (r (node-r n))
-      )
-      (cond
-        ((and l r) (- (node-balance r) (node-balance l)))
-        (l (+ 1 (node-balance l)))
-        (r (+ 1 (node-balance r)))
-        (t 0)
-      )
-    )
+    (- (node-height (node-r n)) (node-height (node-l n)))
     0
+  )
+)
+
+
+(defun rotate-left (tree)
+  (let* (
+      (r (node-r tree))
+      (l (node-l tree))
+      (rl (node-l r))
+      (rr (node-r r))
+    )
+    (make-node
+      :val (node-val r)
+      :l (make-node :val (node-val tree) :r rl :l l)
+      :r rr
+    )
+  )
+)
+
+(defun rotate-right (tree)
+  (let* (
+      (r (node-r tree))
+      (l (node-l tree))
+      (ll (node-l l))
+      (lr (node-r l))
+    )
+    (make-node
+      :val (node-val l)
+      :l ll
+      :r (make-node :val (node-val tree) :r r :l lr)
+    )
+  )
+)
+
+(defun balance-tree (tree)
+  (if tree
+    (case (node-balance tree)
+      (2 (rotate-left tree))
+      (-2 (rotate-right tree))
+      (t tree)
+    )
   )
 )
 
@@ -40,11 +78,11 @@
         (tl (node-l tree))
         (tr (node-r tree))
       )
-      (cond
+      (balance-tree (cond
         ((funcall = nv tv) tree)
         ((funcall < nv tv) (make-node :val tv :l (insert-node tl node < =) :r tr))
         (t (make-node :val tv :l tl :r (insert-node tr node < =)))
-      )
+      ))
     )
     node
   )
@@ -61,5 +99,15 @@
   (cond
     ((node-r tree) (tree-max (node-r tree)))
     (t tree)
+  )
+)
+
+(defun tree-content (tree)
+  (if tree
+    (append
+      (tree-content (node-l tree))
+      (list (node-val tree))
+      (tree-content (node-r tree))
+    )
   )
 )
