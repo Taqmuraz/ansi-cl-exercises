@@ -43,3 +43,17 @@
     (t (and (= 1 (- (first l) (second l))) (diff1-pairs (nthcdr 2 l))))
   )
 )
+
+(defun vec-bounds (v &optional (start 0))
+  (if (< start (array-dimension v 0))
+    (multiple-value-bind (min max) (vec-bounds v (+ start 1))
+      (if (and min max)
+        (values
+          (min min (elt v start))
+          (max max (elt v start))
+        )
+        (values (elt v start) (elt v start))
+      )
+    )
+  )
+)
