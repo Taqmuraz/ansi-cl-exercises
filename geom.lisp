@@ -1,0 +1,10 @@
+(defun is-visible (spec point spec-dir ang)
+  (let* (
+      (d (mapcar #'- point spec))
+      (l (sqrt (reduce #'+ (mapcar (lambda (f) (* f f)) d))))
+      (n (mapcar (lambda (f) (/ f l)) d))
+      (p (reduce #'+ (mapcar #'* n spec-dir)))
+    )
+    (< (acos p) ang)
+  )
+)
