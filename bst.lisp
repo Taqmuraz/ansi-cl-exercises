@@ -136,16 +136,30 @@
 )
 
 (defun search-tree (tree item < = &key key)
-  (if tree
-    (let (
-        (v (node-val tree))
-        (key (if key key #'pair-key))
-      )
-      (cond
-        ((funcall < item (funcall key v)) (search-tree (node-l tree) item < = :key key))
-        ((funcall = item (funcall key v)) tree)
-        (t (search-tree (node-r tree) item < = :key key))
+  (let (
+      (kf (if key key #'identity))
+      (n tree)
+    )
+    (loop while n do
+      (let (
+          (k (funcall kf (node-val n)))
+        )
+        (setf n
+          (cond
+            ((funcall < item k) (node-l n))
+            ((funcall = item k) (return-from search-tree n))
+            (t (node-r n))
+          )
+        )
       )
     )
+  )
+)
+
+(defun assoc-tree (pairs < =)
+  (reduce
+    (lambda (r e) (insert-value r (car e) (cdr e) (key< <) (key= =)))
+    pairs
+    :initial-value nil
   )
 )
