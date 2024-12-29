@@ -14,7 +14,6 @@
   )
 )
 
-
 (defun rotate-left (tree)
   (let* (
       (r (node-r tree))
